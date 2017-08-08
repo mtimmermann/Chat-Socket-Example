@@ -223,9 +223,7 @@
             }, {
                 key: "componentDidUpdate",
                 value: function componentDidUpdate() {
-                    $("time").each(function() {
-                        $(this).text($.timeago($(this).attr("title")));
-                    });
+                    app.timeAgo();
                     PubSub.publish("ChatBoxRendered", {});
                 }
             }, {

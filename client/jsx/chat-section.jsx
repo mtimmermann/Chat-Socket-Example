@@ -133,9 +133,7 @@ class ChatSection extends React.Component {
 	}
 	componentDidUpdate() {
 		// Wire up jquery.timeago plugin to chat timestamps after render
-    $('time').each(function() {
-      $(this).text($.timeago($(this).attr('title')));
-    });
+		app.timeAgo();
 
     // Publish a message that the chat box has been rendered
     PubSub.publish('ChatBoxRendered', {});

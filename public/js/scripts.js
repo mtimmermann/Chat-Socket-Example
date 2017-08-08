@@ -62,6 +62,11 @@ app = $.extend({}, app, function($) {
                 callback(true);
             }
         },
+        timeAgo: function() {
+            $("#chat-box time").each(function() {
+                $(this).text($.timeago($(this).attr("title")));
+            });
+        },
         init: function() {
             modals.chooseName.show();
             $("#chat-box").slimScroll({
@@ -73,6 +78,12 @@ app = $.extend({}, app, function($) {
                     scrollTo: $("#chat-box")[0].scrollHeight
                 });
             });
+            app.utils.timeout(2e3, function() {
+                console.log("2 secs");
+            });
+            setInterval(function() {
+                app.timeAgo();
+            }, 3e4);
         }
     };
 }(jQuery));
@@ -80,3 +91,25 @@ app = $.extend({}, app, function($) {
 $(document).ready(function() {
     app.init();
 });
+
+"use strict";
+
+var app = app || {};
+
+app.utils = app.utils || {};
+
+app.utils = $.extend({}, function($) {
+    return {
+        timeout: function(interval, callback) {
+            var start = Date.now();
+            (function f() {
+                var diff = Date.now() - start, ns = (interval - diff) / 1e3 >> 0, m = ns / 60 >> 0, s = ns - m * 60;
+                if (diff > interval) {
+                    callback();
+                    return void 0;
+                }
+                setTimeout(f, 10);
+            })();
+        }
+    };
+}(jQuery));

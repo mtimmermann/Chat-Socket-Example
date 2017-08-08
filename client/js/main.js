@@ -84,6 +84,15 @@ app = $.extend({}, app,
       },
 
       /**
+       * Apply jQuery.timeago plugin to all timestamps in chat box
+       */
+      timeAgo: function() {
+        $('#chat-box time').each(function() {
+          $(this).text($.timeago($(this).attr('title')));
+        });
+      },
+
+      /**
        * Initialize the app data and app stock chart
        */
       init: function() {
@@ -91,11 +100,18 @@ app = $.extend({}, app,
 
         $('#chat-box').slimScroll({height: '400px'});
 
-        // After every re-render of the chatbox, roll the scroll bar down
+        // After every render of the chatbox, roll the scroll bar down
         PubSub.subscribe('ChatBoxRendered', function(data) {
           console.log('ChatBoxRendered');
           $('#chat-box').slimScroll({ scrollTo: $('#chat-box')[0].scrollHeight });
         });
+
+        app.utils.timeout(2000, function() {
+          console.log('2 secs');
+        });
+        setInterval(function() {
+          app.timeAgo();
+        }, 30000);
       }
     };
 
