@@ -1,4 +1,4 @@
-#### A simple chat server example using socket.io
+### A simple chat server example using socket.io
 ----
 
 ##### Server
