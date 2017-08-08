@@ -106,12 +106,10 @@ app = $.extend({}, app,
           $('#chat-box').slimScroll({ scrollTo: $('#chat-box')[0].scrollHeight });
         });
 
-        app.utils.timeout(2000, function() {
-          console.log('2 secs');
-        });
+        // Run the jQuery.timeAgo plugin every 20 seconds
         setInterval(function() {
           app.timeAgo();
-        }, 30000);
+        }, 20000);
       }
     };
 
