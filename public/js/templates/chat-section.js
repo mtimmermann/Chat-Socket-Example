@@ -169,6 +169,7 @@
             }, {
                 key: "render",
                 value: function render() {
+                    var _React$createElement;
                     return React.createElement("div", {
                         className: "message-form-div"
                     }, React.createElement("form", {
@@ -176,14 +177,15 @@
                         novalidate: true
                     }, React.createElement("div", {
                         className: "input-group"
-                    }, React.createElement("input", _defineProperty({
+                    }, React.createElement("input", (_React$createElement = {
                         name: "message",
                         type: "text",
                         className: "form-control",
                         placeholder: "Enter a message",
                         onChange: this.handleChange,
                         value: this.state.message
-                    }, "value", this.state.message)), React.createElement("span", {
+                    }, _defineProperty(_React$createElement, "value", this.state.message), _defineProperty(_React$createElement, "autoComplete", "off"), 
+                    _React$createElement)), React.createElement("span", {
                         className: "input-group-btn"
                     }, React.createElement("button", {
                         className: "btn btn-success",
@@ -261,15 +263,17 @@
                             messageData: msg
                         }));
                     });
-                    return React.createElement("div", {
-                        className: "col-lg-12"
+                    return React.createElement("div", null, React.createElement("div", {
+                        className: "col-lg-6"
                     }, React.createElement("div", {
                         id: "chat-box"
-                    }, messageRows), React.createElement(MessageForm, {
+                    }, messageRows)), React.createElement("div", {
+                        className: "col-lg-6"
+                    }, React.createElement(MessageForm, {
                         addMessage: this.addMessage
                     }), React.createElement(UserListDisplay, {
                         userData: this.state.userListData
-                    }));
+                    })));
                 }
             } ]);
             return ChatSection;

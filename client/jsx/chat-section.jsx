@@ -92,7 +92,7 @@ class MessageForm extends React.Component {
             <input name="message" type="text" className="form-control"
 							placeholder="Enter a message"
               onChange={this.handleChange} value={this.state.message}
-            	value={this.state.message} />
+            	value={this.state.message} autoComplete="off" />
             <span className="input-group-btn">
               <button className="btn btn-success" type="submit" disabled={!this.state.message}>Send</button>
             </span>
@@ -167,13 +167,17 @@ class ChatSection extends React.Component {
   	});
 
   	return (
-			<div className="col-lg-12">
-  			<div id="chat-box">
-  				{messageRows}
-  			</div>
-  			<MessageForm addMessage={this.addMessage} />
-  			<UserListDisplay userData={this.state.userListData} />
-  		</div>
+      <div>
+        <div className="col-lg-6">
+          <div id="chat-box">
+            {messageRows}
+          </div>
+        </div>
+        <div className="col-lg-6">
+          <MessageForm addMessage={this.addMessage} />
+          <UserListDisplay userData={this.state.userListData} />
+        </div>
+      </div>
   	);
   }
 };
