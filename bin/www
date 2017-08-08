@@ -96,7 +96,9 @@ function onListening() {
 
 
 
-// Handle the socket.io connections
+/**
+ * Handle the socket.io connections
+ */
 var userList = [];
 
 io.on('connection', function(socket) { // First connection
@@ -106,8 +108,7 @@ io.on('connection', function(socket) { // First connection
       var transmit = {date : new Date().toISOString(), name : socket.name, message : data};
       socket.broadcast.emit('message', transmit);
       console.log(transmit['name'] +' said "'+ data +'"');
-
-      sendUserListData(); // Send user list data to all connected users
+      //sendUserListData(); // Send user list data to all connected users
     }
   });
 
@@ -117,15 +118,13 @@ io.on('connection', function(socket) { // First connection
       socket.name = data;
       socket.emit('AddNameStatus', 'ok');
       console.log('user '+ data +' connected');
-      sendUserListData();
+      sendUserListData(); // Send user list data to all connected users
     } else {
       socket.emit('AddNameStatus', 'error') // Name is taken, send an error message
     }
   });
 
   socket.on('disconnect', function () { // User has disconnected
-    sendUserListData();
-
     if (hasName(socket)) {
       console.log('Socket disconnect. Remvoving user: '+ socket.name);
       var newList = userList.filter(function(user) {
@@ -137,6 +136,9 @@ io.on('connection', function(socket) { // First connection
   });
 });
 
+/**
+ * Send socket.io messeage w/ user list data
+ */
 function sendUserListData() { // Send User List data
   io.sockets.emit('UserListData', {
     'count': userList.length,
@@ -144,6 +146,9 @@ function sendUserListData() { // Send User List data
   });
 }
 
-function hasName(socket) { // Test if the user has a name
+/**
+ * Returns true if socket has a user name
+ */
+function hasName(socket) {
   return socket.name ? true : false;
 }
