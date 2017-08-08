@@ -3,15 +3,14 @@
 /**
  * Module dependencies.
  */
-
 var app = require('../app');
 var debug = require('debug')('chat-socket-example:server');
 var http = require('http');
+//var chatIO = require('../server/chat-io');
 
 /**
  * Get port from environment and store in Express.
  */
-
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
@@ -19,17 +18,15 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-
 var server = http.createServer(app);
 
-
-var io = require('socket.io')(server);
+var chatIO = require('../server/chat-io')(server);
+//var io = require('socket.io')(server);
 
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -37,7 +34,6 @@ server.on('listening', onListening);
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -57,7 +53,6 @@ function normalizePort(val) {
 /**
  * Event listener for HTTP server "error" event.
  */
-
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
@@ -85,70 +80,10 @@ function onError(error) {
 /**
  * Event listener for HTTP server "listening" event.
  */
-
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
-}
-
-
-
-/**
- * Handle the socket.io connections
- */
-var userList = [];
-
-io.on('connection', function(socket) { // First connection
-
-  socket.on('message', function (data) { // Broadcast the message to all
-    if (hasName(socket)) {
-      var transmit = {date : new Date().toISOString(), name : socket.name, message : data};
-      socket.broadcast.emit('message', transmit);
-      console.log(transmit['name'] +' said "'+ data +'"');
-      //sendUserListData(); // Send user list data to all connected users
-    }
-  });
-
-  socket.on('SetName', function (data) { // Assign name to user
-    if (userList.indexOf(data) === -1) { // Test if name is taken
-      userList.push(data);
-      socket.name = data;
-      socket.emit('AddNameStatus', 'ok');
-      console.log('user '+ data +' connected');
-      sendUserListData(); // Send user list data to all connected users
-    } else {
-      socket.emit('AddNameStatus', 'error') // Name is taken, send an error message
-    }
-  });
-
-  socket.on('disconnect', function () { // User has disconnected
-    if (hasName(socket)) {
-      console.log('Socket disconnect. Remvoving user: '+ socket.name);
-      var newList = userList.filter(function(user) {
-        return user !== socket.name;
-      });
-      userList = newList;
-      sendUserListData();
-    }
-  });
-});
-
-/**
- * Send socket.io messeage w/ user list data
- */
-function sendUserListData() { // Send User List data
-  io.sockets.emit('UserListData', {
-    'count': userList.length,
-    'list': userList
-  });
-}
-
-/**
- * Returns true if socket has a user name
- */
-function hasName(socket) {
-  return socket.name ? true : false;
 }
