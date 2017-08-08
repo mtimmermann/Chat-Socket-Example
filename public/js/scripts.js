@@ -131,6 +131,9 @@ app.utils = $.extend({}, function($) {
                 }
                 setTimeout(f, 10);
             })();
+        },
+        focusFirstInput: function() {
+            $("form:first *:input[type!=hidden]:first").focus();
         }
     };
 }(jQuery));

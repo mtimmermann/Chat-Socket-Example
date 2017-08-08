@@ -28,6 +28,11 @@ app.utils = $.extend({},
 			    //setTimeout(f,1e3);
 			    setTimeout(f,10); // Pass the function in to window.setTimeout
 			  })();
+			},
+
+			// Find the first input to set focus to
+			focusFirstInput: function() {
+				 $('form:first *:input[type!=hidden]:first').focus();
 			}
 		};
 
