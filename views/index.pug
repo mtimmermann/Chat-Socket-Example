@@ -1,0 +1,31 @@
+extends layout
+
+block content
+
+  div.container#main
+
+    div.row.chat-box-row#chat-section
+
+  div#modals-section
+
+  script(src='/js/scripts.js')
+  script(src='/js/templates/modals-section.js')
+  script(src='/js/templates/chat-section.js')
+
+//-
+  div.modal.fade#modalInfos
+    div(class='modal-dialog')
+      div(class='modal-content')
+        div.modal-header
+          button(type='button' class='close' data-dismiss='modal' aria-hidden='true') &times;
+          h3 About
+        div.modal-body
+          h4 Simple Chat socket.io example
+          p Built on
+            ul
+              li Node.js
+              li Express
+              li Socket.io
+
+
+

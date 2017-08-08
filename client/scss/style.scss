@@ -1,0 +1,54 @@
+@import "bootstrap";
+
+.chat-box-row {
+	padding-top: 15px;
+
+	.message-form-div{
+		padding-top: 10px;
+	}
+}
+
+#chat-box {
+  border: 1px solid grey;
+  border-radius: 5px;
+  background-color: rgba(0,0,0,.05);
+  margin-bottom: 20px;
+  height: 300px;
+  box-shadow: 0 0 10px rgba(0,0,0,.5);
+
+	.message {
+		overflow: hidden;
+		padding: 0 12px;
+		color: black;
+		background: #ababab; /* Old browsers */
+		float: left;
+		margin-left: 0;
+		width: 100%;
+	    -webkit-animation-name: flip;
+	    -webkit-animation-duration: 500ms;
+	    border-bottom:1px solid rgba(0, 0, 0, .1);
+
+		&.self {
+			background: #c7c7c7; /* Old browsers */
+			color: black;
+			text-align: right;
+		}
+		.message-info {
+			padding-top: 5px;
+			font-size: 10px;
+			color: #5C5C5C;
+			.user {
+				font-weight: bold
+			}
+		}
+		.message-text {
+	    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	    font-size: 13px;
+	    line-height: 18px;
+		}
+	}
+}
+
+.user-list-info {
+	padding-top: 15px;
+}

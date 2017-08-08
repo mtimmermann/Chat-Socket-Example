@@ -1,0 +1,148 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('chat-socket-example:server');
+var http = require('http');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+
+var io = require('socket.io')(server);
+
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+
+
+// Handle the socket.io connections
+var userList = [];
+
+io.on('connection', function(socket) { // First connection
+
+  socket.on('message', function (data) { // Broadcast the message to all
+    if (hasName(socket)) {
+      var transmit = {date : new Date().toISOString(), name : socket.name, message : data};
+      socket.broadcast.emit('message', transmit);
+      console.log(transmit['name'] +' said "'+ data +'"');
+
+      sendUserListData(); // Send user list data to all connected users
+    }
+  });
+
+  socket.on('SetName', function (data) { // Assign name to user
+    if (userList.indexOf(data) === -1) { // Test if name is taken
+      userList.push(data);
+      socket.name = data;
+      socket.emit('AddNameStatus', 'ok');
+      console.log('user '+ data +' connected');
+      sendUserListData();
+    } else {
+      socket.emit('AddNameStatus', 'error') // Name is taken, send an error message
+    }
+  });
+
+  socket.on('disconnect', function () { // User has disconnected
+    sendUserListData();
+
+    if (hasName(socket)) {
+      console.log('Socket disconnect. Remvoving user: '+ socket.name);
+      var newList = userList.filter(function(user) {
+        return user !== socket.name;
+      });
+      sendUserListData();
+    }
+  });
+});
+
+function sendUserListData() { // Send User List data
+  io.sockets.emit('UserListData', {
+    'count': userList.length,
+    'list': userList
+  });
+}
+
+function hasName(socket) { // Test if the user has a name
+  return socket.name ? true : false;
+}
