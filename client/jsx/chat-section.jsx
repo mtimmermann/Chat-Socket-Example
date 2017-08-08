@@ -1,4 +1,3 @@
-
 class UserListDisplay extends React.Component {
   constructor(props) {
     super(props);
@@ -141,13 +140,11 @@ class ChatSection extends React.Component {
 
 	// External messages recieved here
 	externalMessage(msg, data) {
-		console.log('pubsub-> '+ msg + JSON.stringify(data));
 		this.addMessage(data);
 	}
 
 	// External pubsub user data update recieved here
 	userDataUpdate(msg, data) {
-		console.log('pubsub-> '+ msg + JSON.stringify(data));
 		this.setState({
 			userListData: {
 				curUserName: data.curUserName,
@@ -160,7 +157,6 @@ class ChatSection extends React.Component {
   	var newMessages = this.state.messages.map(function(msg) { return msg; });
   	newMessages.push(data);
   	this.setState({messages: newMessages});
-  	console.log('addMessage');
   }
 
   render() {

@@ -17,6 +17,7 @@ app = $.extend({}, app, function($) {
             }
         }
     };
+    var socket = io.connect();
     function addMessage(msg, name, date, isMe) {
         PubSub.publish("NewMessage", {
             message: msg,
@@ -25,24 +26,10 @@ app = $.extend({}, app, function($) {
             isMe: isMe
         });
     }
-    var socket = io.connect();
-    socket.on("connect", function() {
-        console.log("connected");
-    });
-    socket.on("UserListData", function(data) {
-        console.log("socket.on->UserListData TODO: Pubsub to react component");
-        console.log("UserListData: " + JSON.stringify(data));
-        PubSub.publish("UserListData", $.extend(data, {
-            curUserName: userName
-        }));
-    });
-    socket.on("message", function(data) {
-        addMessage(data.message, data.name, new Date().toISOString(), false);
-        console.log("socket.on->message" + data);
-    });
-    return {
-        modals: modals,
-        addName: function(name, callback) {
+    function addName(name, callback) {
+        if (!name) {
+            callback(false);
+        } else {
             socket.emit("SetName", name);
             socket.on("AddNameStatus", function(data) {
                 if (data === "ok") {
@@ -51,6 +38,34 @@ app = $.extend({}, app, function($) {
                 } else {
                     callback(false);
                 }
+            });
+        }
+    }
+    socket.on("connect", function() {
+        console.log("connected");
+    });
+    socket.on("UserListData", function(data) {
+        console.log("UserListData: " + JSON.stringify(data));
+        PubSub.publish("UserListData", $.extend(data, {
+            curUserName: userName
+        }));
+    });
+    socket.on("message", function(data) {
+        addMessage(data.message, data.name, new Date().toISOString(), false);
+    });
+    socket.on("AmIConnected", function(isConnected) {
+        if (!isConnected) {
+            console.log("Connection lost, attempting to re-connect");
+            addName(userName, function(isSuccess) {
+                console.log("Re-connected? " + isSuccess);
+            });
+        }
+    });
+    return {
+        modals: modals,
+        addName: function(name, callback) {
+            addName(name, function(isSuccess) {
+                callback(isSuccess);
             });
         },
         sendMessage: function(message, callback) {
@@ -78,12 +93,14 @@ app = $.extend({}, app, function($) {
                     scrollTo: $("#chat-box")[0].scrollHeight
                 });
             });
-            app.utils.timeout(2e3, function() {
-                console.log("2 secs");
-            });
             setInterval(function() {
                 app.timeAgo();
-            }, 3e4);
+            }, 2e4);
+            setInterval(function() {
+                if (socket.connected) {
+                    socket.emit("AmIConnected", userName);
+                }
+            }, 1e4);
         }
     };
 }(jQuery));

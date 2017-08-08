@@ -15,6 +15,9 @@ app = $.extend({}, app,
           }
         };
 
+    // Socket.io
+    var socket = io.connect();
+
     function addMessage(msg, name, date, isMe) {
       PubSub.publish('NewMessage', {
         message: msg,
@@ -24,20 +27,40 @@ app = $.extend({}, app,
       });
     }
 
-    // Socket.io
-    var socket = io.connect();
+    function addName(name, callback) {
+      if (!name) {
+        callback(false /* isSuccess */);
+      } else {
+        socket.emit('SetName', name);
+        socket.on('AddNameStatus', function(data) {
+          if (data === "ok") {
+            callback(true /* isSuccess */);
+            userName = name;
+          } else {
+            callback(false /* isSuccess */);
+          }
+        });
+      }
+    }
+
     socket.on('connect', function() {
       console.log('connected');
     });
     socket.on('UserListData', function(data) {
-      // TODO: Pubsub to react component
-      console.log('socket.on->UserListData TODO: Pubsub to react component');
       console.log('UserListData: '+ JSON.stringify(data));
       PubSub.publish('UserListData', $.extend(data, { curUserName: userName }));
     });
     socket.on('message', function(data) {
       addMessage(data.message, data.name, new Date().toISOString(), false);
-      console.log('socket.on->message'+ data);
+    });
+
+    socket.on('AmIConnected', function(isConnected) {
+      if (!isConnected) {
+        console.log('Connection lost, attempting to re-connect');
+        addName(userName, function(isSuccess) {
+          console.log('Re-connected? '+ isSuccess);
+        });
+      }
     });
 
     /**
@@ -55,14 +78,8 @@ app = $.extend({}, app,
                 {object} success: true if successful
        */
       addName: function(name, callback) {
-        socket.emit('SetName', name);
-        socket.on('AddNameStatus', function(data) {
-          if (data === "ok") {
-            callback(true /* isSuccess */);
-            userName = name;
-          } else {
-            callback(false /* isSuccess */);
-          }
+        addName(name, function(isSuccess) {
+          callback(isSuccess);
         });
       },
 
@@ -110,6 +127,13 @@ app = $.extend({}, app,
         setInterval(function() {
           app.timeAgo();
         }, 20000);
+
+        // Check if connection has been dropped (ie server reset)
+        setInterval(function() {
+          if (socket.connected) {
+            socket.emit('AmIConnected', userName);
+          }
+        }, 10000);
       }
     };
 

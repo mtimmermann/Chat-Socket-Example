@@ -9,7 +9,7 @@ module.exports = function(server) {
 	 */
 	io.on('connection', function(socket) {
 
-	  socket.on('message', function (data) { // Broadcast message to all
+	  socket.on('message', function(data) { // Broadcast message to all
 	    if (hasName(socket)) {
 	      var transmit = {date : new Date().toISOString(), name : socket.name, message : data};
 	      socket.broadcast.emit('message', transmit);
@@ -18,19 +18,27 @@ module.exports = function(server) {
 	    }
 	  });
 
-	  socket.on('SetName', function (data) { // Assign name to user
-	    if (userList.indexOf(data) === -1) { // Test if name is taken
-	      userList.push(data);
-	      socket.name = data;
+	  socket.on('SetName', function(name) { // Assign name to user
+	    if (userList.indexOf(name) === -1) { // Test if name is taken
+	      userList.push(name);
+	      socket.name = name;
 	      socket.emit('AddNameStatus', 'ok');
-	      console.log('user '+ data +' connected');
+	      console.log('user '+ name +' connected');
 	      sendUserListData(); // Send user list data to all connected users
 	    } else {
 	      socket.emit('AddNameStatus', 'error') // Name is taken, send an error message
 	    }
 	  });
 
-	  socket.on('disconnect', function () { // User has disconnected
+	  // socket.on('GetUserList', function() {
+	  // 	sendUserListData();
+	  // });
+	  socket.on('AmIConnected', function(name) {
+	  	var connected = hasName(socket) && socket.name === name;
+	  	socket.emit('AmIConnected', connected);
+	  });
+
+	  socket.on('disconnect', function() { // User has disconnected
 	    if (hasName(socket)) {
 	      console.log('Socket disconnect. Remvoving user: '+ socket.name);
 	      var newList = userList.filter(function(user) {

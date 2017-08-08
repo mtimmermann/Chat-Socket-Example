@@ -229,13 +229,11 @@
             }, {
                 key: "externalMessage",
                 value: function externalMessage(msg, data) {
-                    console.log("pubsub-> " + msg + JSON.stringify(data));
                     this.addMessage(data);
                 }
             }, {
                 key: "userDataUpdate",
                 value: function userDataUpdate(msg, data) {
-                    console.log("pubsub-> " + msg + JSON.stringify(data));
                     this.setState({
                         userListData: {
                             curUserName: data.curUserName,
@@ -253,7 +251,6 @@
                     this.setState({
                         messages: newMessages
                     });
-                    console.log("addMessage");
                 }
             }, {
                 key: "render",
