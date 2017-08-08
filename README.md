@@ -27,3 +27,6 @@ grunt
 ```
 npm run devstart
 ```
+
+---
+[Demo on Heruko](https://chat-socket-example-mtimmer.herokuapp.com/)
