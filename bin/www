@@ -131,6 +131,7 @@ io.on('connection', function(socket) { // First connection
       var newList = userList.filter(function(user) {
         return user !== socket.name;
       });
+      userList = newList;
       sendUserListData();
     }
   });
