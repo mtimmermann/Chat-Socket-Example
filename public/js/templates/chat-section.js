@@ -96,7 +96,7 @@
                     });
                     return React.createElement("div", {
                         className: "user-list-info"
-                    }, this.props.userData.list.length > 0 && React.createElement("div", null, React.createElement("p", null, "Welcome ", this.props.userData.curUserName), React.createElement("p", null, "Other Users Online (", users.length, " online)")), React.createElement("ul", null, userRows));
+                    }, this.props.userData.list.length > 0 && React.createElement("div", null, React.createElement("p", null, "Welcome ", React.createElement("strong", null, this.props.userData.curUserName)), React.createElement("p", null, "Other Users Online (", users.length, " online)")), React.createElement("ul", null, userRows));
                 }
             } ]);
             return UserListDisplay;

@@ -14,6 +14,7 @@ app = $.extend({}, app, function($) {
             },
             hide: function() {
                 $("#modalChooseName").modal("hide");
+                $('input[name="message"]').focus();
             }
         }
     };
@@ -54,7 +55,7 @@ app = $.extend({}, app, function($) {
         addMessage(data.message, data.name, new Date().toISOString(), false);
     });
     socket.on("AmIConnected", function(isConnected) {
-        if (!isConnected) {
+        if (!isConnected && userName) {
             console.log("Connection lost, attempting to re-connect");
             addName(userName, function(isSuccess) {
                 console.log("Re-connected? " + isSuccess);
@@ -84,6 +85,9 @@ app = $.extend({}, app, function($) {
         },
         init: function() {
             modals.chooseName.show();
+            app.utils.timeout(1e3, function() {
+                $('input[name="name"]').focus();
+            });
             $("#chat-box").slimScroll({
                 height: "400px"
             });

@@ -11,7 +11,10 @@ app = $.extend({}, app,
         modals = {
           chooseName: {
             show: function() { $('#modalChooseName').modal('show'); },
-            hide: function() { $('#modalChooseName').modal('hide'); }
+            hide: function() {
+              $('#modalChooseName').modal('hide');
+              $('input[name="message"]').focus();
+            }
           }
         };
 
@@ -55,7 +58,7 @@ app = $.extend({}, app,
     });
 
     socket.on('AmIConnected', function(isConnected) {
-      if (!isConnected) {
+      if (!isConnected && userName) {
         console.log('Connection lost, attempting to re-connect');
         addName(userName, function(isSuccess) {
           console.log('Re-connected? '+ isSuccess);
@@ -114,6 +117,9 @@ app = $.extend({}, app,
        */
       init: function() {
         modals.chooseName.show();
+        app.utils.timeout(1000, function() {
+          $('input[name="name"]').focus();
+        });
 
         $('#chat-box').slimScroll({height: '400px'});
 
@@ -124,9 +130,7 @@ app = $.extend({}, app,
         });
 
         // Run the jQuery.timeAgo plugin every 20 seconds
-        setInterval(function() {
-          app.timeAgo();
-        }, 20000);
+        setInterval(function() { app.timeAgo(); }, 20000);
 
         // Check if connection has been dropped (ie server reset)
         setInterval(function() {

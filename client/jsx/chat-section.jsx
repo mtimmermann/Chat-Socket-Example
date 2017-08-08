@@ -15,7 +15,7 @@ class UserListDisplay extends React.Component {
   		<div className="user-list-info">
   			{ this.props.userData.list.length > 0 &&
   			<div>
-  				<p>Welcome {this.props.userData.curUserName}</p>
+  				<p>Welcome <strong>{this.props.userData.curUserName}</strong></p>
   				<p>Other Users Online ({users.length} online)</p>
   			</div>
   			}
