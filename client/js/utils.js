@@ -30,7 +30,9 @@ app.utils = $.extend({},
 			  })();
 			},
 
-			// Find the first input to set focus to
+			/**
+			 * Find the first input to set focus to
+			 */
 			focusFirstInput: function() {
 				 $('form:first *:input[type!=hidden]:first').focus();
 			}

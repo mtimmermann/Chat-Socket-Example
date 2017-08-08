@@ -83,6 +83,52 @@ class ChooseName extends React.Component {
   }
 };
 
+class About extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div id="modalAbout" className="modal fade" role="dialog" aria-labelledby="modalAbout" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h3>About Chat Socket.io</h3>
+            </div>
+            <div className="modal-body">
+              <h5>Server</h5>
+              <ul>
+                <li>Node.js</li>
+                <li>Express 4</li>
+              </ul>
+              <h5>Client JS</h5>
+              <ul>
+                <li>React 15.6</li>
+                <li>JQuery 3.2.1
+                  <ul>
+                    <li>JQuery Slim-Scroll plugin</li>
+                    <li>JQuery Timeago plugin</li>
+                  </ul>
+                </li>
+                <li>PubSub-JS</li>
+              </ul>
+              <h5>Client Style</h5>
+              <ul>
+                <li>Bootstrap-Sass 3.3.7</li>
+              </ul>
+            </div>
+            <div className="modal-footer">
+              <a href="https://github.com/mtimmermann/chat-socket-example">Source Code on GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+};
+
 class ModalsSection extends React.Component {
   constructor(props) {
     super(props);
@@ -92,6 +138,7 @@ class ModalsSection extends React.Component {
   	return (
   		<div>
   			<ChooseName />
+        <About />
   		</div>
   	)
   }

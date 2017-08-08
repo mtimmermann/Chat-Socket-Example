@@ -163,8 +163,45 @@
             } ]);
             return ChooseName;
         }(React.Component);
-        var ModalsSection = function(_React$Component2) {
-            _inherits(ModalsSection, _React$Component2);
+        var About = function(_React$Component2) {
+            _inherits(About, _React$Component2);
+            function About(props) {
+                _classCallCheck(this, About);
+                return _possibleConstructorReturn(this, (About.__proto__ || Object.getPrototypeOf(About)).call(this, props));
+            }
+            _createClass(About, [ {
+                key: "render",
+                value: function render() {
+                    return React.createElement("div", {
+                        id: "modalAbout",
+                        className: "modal fade",
+                        role: "dialog",
+                        "aria-labelledby": "modalAbout",
+                        "aria-hidden": "true"
+                    }, React.createElement("div", {
+                        className: "modal-dialog"
+                    }, React.createElement("div", {
+                        className: "modal-content"
+                    }, React.createElement("div", {
+                        className: "modal-header"
+                    }, React.createElement("button", {
+                        type: "button",
+                        className: "close",
+                        "data-dismiss": "modal",
+                        "aria-hidden": "true"
+                    }, "×"), React.createElement("h3", null, "About Chat Socket.io")), React.createElement("div", {
+                        className: "modal-body"
+                    }, React.createElement("h5", null, "Server"), React.createElement("ul", null, React.createElement("li", null, "Node.js"), React.createElement("li", null, "Express 4")), React.createElement("h5", null, "Client JS"), React.createElement("ul", null, React.createElement("li", null, "React 15.6"), React.createElement("li", null, "JQuery 3.2.1", React.createElement("ul", null, React.createElement("li", null, "JQuery Slim-Scroll plugin"), React.createElement("li", null, "JQuery Timeago plugin"))), React.createElement("li", null, "PubSub-JS")), React.createElement("h5", null, "Client Style"), React.createElement("ul", null, React.createElement("li", null, "Bootstrap-Sass 3.3.7"))), React.createElement("div", {
+                        className: "modal-footer"
+                    }, React.createElement("a", {
+                        href: "https://github.com/mtimmermann/chat-socket-example"
+                    }, "Source Code on GitHub")))));
+                }
+            } ]);
+            return About;
+        }(React.Component);
+        var ModalsSection = function(_React$Component3) {
+            _inherits(ModalsSection, _React$Component3);
             function ModalsSection(props) {
                 _classCallCheck(this, ModalsSection);
                 return _possibleConstructorReturn(this, (ModalsSection.__proto__ || Object.getPrototypeOf(ModalsSection)).call(this, props));
@@ -172,7 +209,7 @@
             _createClass(ModalsSection, [ {
                 key: "render",
                 value: function render() {
-                    return React.createElement("div", null, React.createElement(ChooseName, null));
+                    return React.createElement("div", null, React.createElement(ChooseName, null), React.createElement(About, null));
                 }
             } ]);
             return ModalsSection;
