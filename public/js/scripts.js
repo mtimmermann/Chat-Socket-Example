@@ -51,7 +51,7 @@ app = $.extend({}, app, function($) {
             curUserName: userName
         }));
     });
-    socket.on("message", function(data) {
+    socket.on("Message", function(data) {
         addMessage(data.message, data.name, new Date().toISOString(), false);
     });
     socket.on("AmIConnected", function(isConnected) {
@@ -74,7 +74,7 @@ app = $.extend({}, app, function($) {
                 modals.chooseName.show();
                 callback(false);
             } else {
-                socket.emit("message", message);
+                socket.emit("Message", message);
                 callback(true);
             }
         },

@@ -9,10 +9,10 @@ module.exports = function(server) {
 	 */
 	io.on('connection', function(socket) {
 
-	  socket.on('message', function(data) { // Broadcast message to all
+	  socket.on('Message', function(data) { // Broadcast message to all
 	    if (hasName(socket)) {
 	      var transmit = {date : new Date().toISOString(), name : socket.name, message : data};
-	      socket.broadcast.emit('message', transmit);
+	      socket.broadcast.emit('Message', transmit);
 	      console.log(transmit['name'] +' said "'+ data +'"');
 	      //sendUserListData(); // Send user list data to all connected users
 	    }

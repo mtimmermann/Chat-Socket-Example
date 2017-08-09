@@ -53,7 +53,7 @@ app = $.extend({}, app,
       console.log('UserListData: '+ JSON.stringify(data));
       PubSub.publish('UserListData', $.extend(data, { curUserName: userName }));
     });
-    socket.on('message', function(data) {
+    socket.on('Message', function(data) {
       addMessage(data.message, data.name, new Date().toISOString(), false);
     });
 
@@ -98,7 +98,7 @@ app = $.extend({}, app,
           modals.chooseName.show();
           callback(false /* isSuccess */);
         } else {
-          socket.emit('message', message);
+          socket.emit('Message', message);
             callback(true /* isSuccess */);
         }
       },
