@@ -102,6 +102,7 @@ class About extends React.Component {
               <ul>
                 <li>Node.js</li>
                 <li>Express 4</li>
+                <li>socket.io</li>
               </ul>
               <h5>Client JS</h5>
               <ul>

@@ -4,6 +4,7 @@
 ##### Server
 * Node.js
 * Express 4
+* socket.io
 
 ##### Client JS
 * React 15.6
